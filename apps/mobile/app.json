@@ -1,0 +1,61 @@
+{
+  "expo": {
+    "name": "Soko Link",
+    "slug": "sokolink",
+    "version": "1.0.0",
+    "orientation": "portrait",
+    "icon": "./assets/icon.png",
+    "scheme": "sokolink",
+    "userInterfaceStyle": "automatic",
+    "splash": {
+      "image": "./assets/splash.png",
+      "resizeMode": "contain",
+      "backgroundColor": "#1B4332"
+    },
+    "ios": {
+      "supportsTablet": false,
+      "bundleIdentifier": "co.tz.sokolink",
+      "buildNumber": "1",
+      "infoPlist": {
+        "NSCameraUsageDescription": "Tumia kamera kupiga picha za bidhaa",
+        "NSPhotoLibraryUsageDescription": "Chagua picha za bidhaa kutoka kwenye gallery",
+        "NSLocationWhenInUseUsageDescription": "Tunahitaji mahali pako kwa delivery"
+      }
+    },
+    "android": {
+      "package": "co.tz.sokolink",
+      "versionCode": 1,
+      "adaptiveIcon": {
+        "foregroundImage": "./assets/adaptive-icon.png",
+        "backgroundColor": "#1B4332"
+      },
+      "permissions": [
+        "CAMERA",
+        "READ_EXTERNAL_STORAGE",
+        "WRITE_EXTERNAL_STORAGE",
+        "ACCESS_FINE_LOCATION",
+        "ACCESS_COARSE_LOCATION",
+        "RECEIVE_BOOT_COMPLETED",
+        "VIBRATE"
+      ]
+    },
+    "web": {
+      "bundler": "metro"
+    },
+    "plugins": [
+      "expo-router",
+      "expo-font",
+      [
+        "expo-notifications",
+        {
+          "icon": "./assets/notification-icon.png",
+          "color": "#1B4332"
+        }
+      ]
+    ],
+    "extra": {
+      "eas": { "projectId": "YOUR_EAS_PROJECT_ID" },
+      "apiUrl": "https://api.sokolink.co.tz"
+    }
+  }
+}
