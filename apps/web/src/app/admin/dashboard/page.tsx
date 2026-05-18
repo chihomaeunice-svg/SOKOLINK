@@ -2,301 +2,249 @@
 
 import { useState } from "react";
 import {
-  Users, Store, ShoppingBag, DollarSign,
+  LayoutDashboard, Store, ShoppingBag, Users,
   CheckCircle2, XCircle, Eye, AlertTriangle,
-  TrendingUp, Package, BarChart3, Settings,
-  LogOut, Shield, Bell
+  TrendingUp, DollarSign, Bell, Shield, LogOut,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { formatCurrency, formatRelativeTime } from "@/lib/utils";
 
-const DEMO_PLATFORM_STATS = {
-  totalRevenue: 48500000,
-  monthRevenue: 12300000,
-  totalOrders: 1247,
-  activeOrders: 89,
-  totalSellers: 134,
-  pendingSellers: 8,
-  totalCustomers: 4521,
-  platformFeeCollected: 2425000,
-};
-
-const DEMO_PENDING_SELLERS = [
-  { id: "ps1", storeName: "Mama Pima Fashion", ownerName: "Amina Juma", phone: "+255712001001", location: "Kariakoo, DSM", appliedAt: new Date(Date.now() - 1000 * 60 * 60 * 3) },
-  { id: "ps2", storeName: "TechHub Arusha", ownerName: "David Mollel", phone: "+255754002002", location: "Arusha Mjini", appliedAt: new Date(Date.now() - 1000 * 60 * 60 * 7) },
-  { id: "ps3", storeName: "Zanzibar Spices", ownerName: "Hassan Omar", phone: "+255777003003", location: "Zanzibar Town", appliedAt: new Date(Date.now() - 1000 * 60 * 60 * 14) },
+/* ── demo data ──────────────────────────────────────────────── */
+const STATS = [
+  { label:"Mapato ya Jumla",    value:"TZS 48,500,000", sub:"Jumla ya transactions",      icon:DollarSign,  color:"text-emerald-600 bg-emerald-50" },
+  { label:"Ada ya Platform 5%", value:"TZS 2,425,000",  sub:"Mwezi huu",                  icon:TrendingUp,  color:"text-blue-600 bg-blue-50"       },
+  { label:"Maagizo Yote",       value:"1,247",           sub:"89 yanafanyika sasa",         icon:ShoppingBag, color:"text-purple-600 bg-purple-50"   },
+  { label:"Watumiaji",          value:"4,655",           sub:"4,521 wateja · 134 wauzaji", icon:Users,       color:"text-amber-600 bg-amber-50"     },
 ];
 
-const DEMO_RECENT_ORDERS = [
-  { id: "SL-P9X1A", customer: "Fatuma Ali", seller: "Kariakoo Electronics", amount: 650000, status: "processing" },
-  { id: "SL-Q2B7M", customer: "John Mwangi", seller: "Fashion Dar", amount: 85000, status: "shipped" },
-  { id: "SL-R3C8N", customer: "Amina Hassan", seller: "Tech Kariakoo", amount: 55000, status: "delivered" },
-  { id: "SL-S4D9P", customer: "Peter Kimani", seller: "Duka la Nyumbani", amount: 35000, status: "pending" },
+const PENDING = [
+  { id:"ps1", store:"Mama Pima Fashion",  owner:"Amina Juma",   phone:"+255712001001", loc:"Kariakoo, DSM",  at: new Date(Date.now()-1000*60*60*3)  },
+  { id:"ps2", store:"TechHub Arusha",     owner:"David Mollel", phone:"+255754002002", loc:"Arusha Mjini",   at: new Date(Date.now()-1000*60*60*7)  },
+  { id:"ps3", store:"Zanzibar Spices",    owner:"Hassan Omar",  phone:"+255777003003", loc:"Zanzibar Town",  at: new Date(Date.now()-1000*60*60*14) },
 ];
 
-const STATUS_CONFIG: Record<string, { label: string; variant: "success" | "warning" | "info" | "muted" | "danger" }> = {
-  pending: { label: "Inasubiri", variant: "warning" },
-  confirmed: { label: "Imethibitishwa", variant: "info" },
-  processing: { label: "Inatengenezwa", variant: "info" },
-  shipped: { label: "Imesafirishwa", variant: "success" },
-  delivered: { label: "Imefikia", variant: "success" },
-  cancelled: { label: "Imefutwa", variant: "danger" },
+const ORDERS = [
+  { id:"SL-P9X1A", customer:"Fatuma Ali",   seller:"Kariakoo Electronics", amount:650000, status:"processing" },
+  { id:"SL-Q2B7M", customer:"John Mwangi",  seller:"Fashion Dar",           amount:85000,  status:"shipped"    },
+  { id:"SL-R3C8N", customer:"Amina Hassan", seller:"Tech Kariakoo",          amount:55000,  status:"delivered"  },
+  { id:"SL-S4D9P", customer:"Peter Kimani", seller:"Duka la Nyumbani",       amount:35000,  status:"pending"    },
+];
+
+const STATUS: Record<string,{label:string; variant:"success"|"warning"|"info"|"muted"|"danger"}> = {
+  pending:    { label:"Inasubiri",    variant:"warning" },
+  processing: { label:"Inatengenezwa", variant:"info"   },
+  shipped:    { label:"Imesafirishwa", variant:"success" },
+  delivered:  { label:"Imefikia",      variant:"success" },
 };
 
 type Tab = "overview" | "sellers" | "orders";
 
-export default function AdminDashboardPage() {
-  const [activeTab, setActiveTab] = useState<Tab>("overview");
-  const [pendingSellers, setPendingSellers] = useState(DEMO_PENDING_SELLERS);
+const NAV = [
+  { id:"overview", label:"Muhtasari",  icon:LayoutDashboard },
+  { id:"sellers",  label:"Wauzaji",    icon:Store, badge:PENDING.length },
+  { id:"orders",   label:"Maagizo",    icon:ShoppingBag },
+];
 
-  function approveSeller(id: string) {
-    setPendingSellers((prev) => prev.filter((s) => s.id !== id));
-    alert("Muuzaji ameidhinishwa! Atapata SMS.");
-  }
+export default function AdminDashboard() {
+  const [tab,     setTab]     = useState<Tab>("overview");
+  const [pending, setPending] = useState(PENDING);
 
-  function rejectSeller(id: string) {
-    setPendingSellers((prev) => prev.filter((s) => s.id !== id));
-    alert("Ombi la muuzaji limekataliwa.");
-  }
+  const approve = (id: string) => { setPending((p) => p.filter((s) => s.id !== id)); };
+  const reject  = (id: string) => { setPending((p) => p.filter((s) => s.id !== id)); };
 
   return (
     <div className="flex min-h-screen bg-gray-50">
-      {/* Sidebar */}
-      <aside className="fixed inset-y-0 left-0 z-40 hidden w-64 border-r bg-brand-900 text-white lg:flex lg:flex-col">
-        <div className="flex h-16 items-center gap-3 border-b border-white/10 px-6">
-          <Shield className="h-6 w-6 text-gold-400" />
-          <div>
-            <span className="font-bold">Soko</span>
-            <span className="font-bold text-gold-400">Link</span>
-            <span className="ml-1 text-xs text-white/60">Admin</span>
-          </div>
+
+      {/* ── Sidebar ─────────────────────────────────────── */}
+      <aside className="fixed inset-y-0 left-0 z-40 hidden lg:flex lg:flex-col w-60 bg-gray-950 text-white">
+        {/* Logo */}
+        <div className="flex items-center gap-2.5 px-5 h-16 border-b border-white/10">
+          <Shield className="h-5 w-5 text-amber-400" />
+          <span className="font-bold">SokoLink <span className="text-xs font-normal text-white/40">Admin</span></span>
         </div>
 
-        <nav className="flex-1 space-y-1 px-3 py-4">
-          {[
-            { id: "overview", label: "Muhtasari", icon: BarChart3 },
-            { id: "sellers", label: "Wauzaji", icon: Store, badge: DEMO_PLATFORM_STATS.pendingSellers },
-            { id: "orders", label: "Maagizo Yote", icon: ShoppingBag },
-          ].map((item) => (
+        {/* Nav */}
+        <nav className="flex-1 px-3 py-4 space-y-0.5">
+          {NAV.map((n) => (
             <button
-              key={item.id}
-              onClick={() => setActiveTab(item.id as Tab)}
-              className={`flex w-full items-center justify-between rounded-lg px-3 py-2.5 text-sm font-medium transition-colors ${
-                activeTab === item.id ? "bg-white/15 text-white" : "text-white/70 hover:bg-white/10 hover:text-white"
+              key={n.id}
+              onClick={() => setTab(n.id as Tab)}
+              className={`w-full flex items-center justify-between rounded-xl px-3 py-2.5 text-sm font-medium transition-colors ${
+                tab === n.id ? "bg-white/15 text-white" : "text-white/60 hover:bg-white/10 hover:text-white"
               }`}
             >
-              <div className="flex items-center gap-3">
-                <item.icon className="h-4 w-4" />
-                {item.label}
-              </div>
-              {item.badge ? (
-                <span className="flex h-5 min-w-5 items-center justify-center rounded-full bg-red-500 px-1 text-xs text-white">
-                  {item.badge}
-                </span>
-              ) : null}
+              <div className="flex items-center gap-3"><n.icon className="h-4 w-4" />{n.label}</div>
+              {n.badge ? <span className="h-5 w-5 flex items-center justify-center rounded-full bg-red-500 text-white text-xs">{n.badge}</span> : null}
             </button>
           ))}
 
           <div className="my-3 border-t border-white/10" />
 
-          <button className="flex w-full items-center gap-3 rounded-lg px-3 py-2.5 text-sm font-medium text-white/70 hover:bg-white/10 hover:text-white">
+          <button className="w-full flex items-center gap-3 rounded-xl px-3 py-2.5 text-sm font-medium text-white/60 hover:bg-white/10 hover:text-white">
             <Users className="h-4 w-4" /> Wateja
-          </button>
-          <button className="flex w-full items-center gap-3 rounded-lg px-3 py-2.5 text-sm font-medium text-white/70 hover:bg-white/10 hover:text-white">
-            <Settings className="h-4 w-4" /> Mipangilio
           </button>
         </nav>
 
         <div className="border-t border-white/10 p-4">
           <div className="flex items-center gap-3 mb-3">
-            <div className="flex h-8 w-8 items-center justify-center rounded-full bg-white/20 font-bold text-sm">A</div>
+            <div className="h-8 w-8 rounded-full bg-white/20 flex items-center justify-center font-bold text-sm">A</div>
             <div>
-              <p className="text-sm font-semibold">Admin Panel</p>
-              <p className="text-xs text-white/50">Soko Link HQ</p>
+              <p className="text-sm font-semibold">Admin</p>
+              <p className="text-xs text-white/40">Soko Link HQ</p>
             </div>
           </div>
-          <button className="flex items-center gap-2 text-xs text-white/50 hover:text-white">
+          <button className="flex items-center gap-2 text-xs text-white/40 hover:text-white transition-colors">
             <LogOut className="h-3.5 w-3.5" /> Toka
           </button>
         </div>
       </aside>
 
-      <div className="flex-1 lg:ml-64">
+      {/* ── Main ────────────────────────────────────────── */}
+      <div className="flex-1 lg:ml-60">
+
         {/* Header */}
-        <header className="sticky top-0 z-30 flex h-16 items-center justify-between border-b bg-white px-6 shadow-sm">
+        <header className="sticky top-0 z-30 bg-white border-b border-gray-100 px-6 h-16 flex items-center justify-between shadow-sm">
           <div>
-            <h1 className="font-bold text-gray-900">
-              {activeTab === "overview" && "Platform Overview"}
-              {activeTab === "sellers" && "Usimamizi wa Wauzaji"}
-              {activeTab === "orders" && "Maagizo Yote"}
+            <h1 className="font-extrabold text-gray-900">
+              {tab === "overview" && "Platform Overview"}
+              {tab === "sellers"  && "Usimamizi wa Wauzaji"}
+              {tab === "orders"   && "Maagizo Yote"}
             </h1>
-            <p className="text-xs text-gray-500">Soko Link Admin Panel</p>
+            <p className="text-xs text-gray-400">Soko Link Admin</p>
           </div>
-          <button className="relative p-2 text-gray-500">
+          <button className="relative p-2 rounded-xl text-gray-400 hover:text-gray-700 hover:bg-gray-50">
             <Bell className="h-5 w-5" />
-            {DEMO_PLATFORM_STATS.pendingSellers > 0 && (
-              <span className="absolute right-1.5 top-1.5 flex h-4 w-4 items-center justify-center rounded-full bg-red-500 text-xs text-white">
-                {DEMO_PLATFORM_STATS.pendingSellers}
+            {pending.length > 0 && (
+              <span className="absolute top-1.5 right-1.5 h-4 w-4 flex items-center justify-center rounded-full bg-red-500 text-white text-[10px] font-bold">
+                {pending.length}
               </span>
             )}
           </button>
         </header>
 
-        <main className="p-6">
+        <main className="p-6 space-y-6">
+
           {/* ── Overview ── */}
-          {activeTab === "overview" && (
-            <div className="space-y-6">
+          {tab === "overview" && (
+            <>
               <div className="grid gap-4 sm:grid-cols-2 xl:grid-cols-4">
-                {[
-                  { label: "Mapato ya Platform", value: formatCurrency(DEMO_PLATFORM_STATS.totalRevenue), icon: DollarSign, color: "text-green-600 bg-green-100", sub: "Jumla ya transactions" },
-                  { label: "Mapato ya Mwezi", value: formatCurrency(DEMO_PLATFORM_STATS.monthRevenue), icon: TrendingUp, color: "text-blue-600 bg-blue-100", sub: "Mei 2025" },
-                  { label: "Maagizo Yote", value: DEMO_PLATFORM_STATS.totalOrders.toLocaleString(), icon: ShoppingBag, color: "text-purple-600 bg-purple-100", sub: `${DEMO_PLATFORM_STATS.activeOrders} yanafanyika` },
-                  { label: "Ada ya Platform (5%)", value: formatCurrency(DEMO_PLATFORM_STATS.platformFeeCollected), icon: Package, color: "text-amber-600 bg-amber-100", sub: "Mwezi huu" },
-                ].map((stat) => (
-                  <Card key={stat.label}>
-                    <CardContent className="p-5">
-                      <div className="flex items-center justify-between">
-                        <div>
-                          <p className="text-sm text-gray-500">{stat.label}</p>
-                          <p className="mt-1 text-2xl font-bold text-gray-900">{stat.value}</p>
-                          <p className="mt-1 text-xs text-gray-400">{stat.sub}</p>
-                        </div>
-                        <div className={`rounded-xl p-3 ${stat.color}`}>
-                          <stat.icon className="h-5 w-5" />
-                        </div>
-                      </div>
-                    </CardContent>
-                  </Card>
+                {STATS.map((s) => (
+                  <div key={s.label} className="bg-white rounded-2xl border border-gray-100 shadow-sm p-5">
+                    <div className="flex items-start justify-between mb-3">
+                      <p className="text-sm text-gray-500">{s.label}</p>
+                      <div className={`rounded-xl p-2 ${s.color}`}><s.icon className="h-4 w-4" /></div>
+                    </div>
+                    <p className="text-2xl font-extrabold text-gray-900">{s.value}</p>
+                    <p className="text-xs text-gray-400 mt-1">{s.sub}</p>
+                  </div>
                 ))}
               </div>
 
-              <div className="grid gap-6 lg:grid-cols-2">
-                {/* Users summary */}
-                <Card>
-                  <CardHeader><CardTitle className="text-base">Watumiaji wa Platform</CardTitle></CardHeader>
-                  <CardContent className="space-y-4">
-                    {[
-                      { label: "Wateja Wote", value: DEMO_PLATFORM_STATS.totalCustomers.toLocaleString(), icon: Users, color: "text-blue-600 bg-blue-100" },
-                      { label: "Wauzaji Walioidhinishwa", value: (DEMO_PLATFORM_STATS.totalSellers - DEMO_PLATFORM_STATS.pendingSellers).toString(), icon: Store, color: "text-green-600 bg-green-100" },
-                      { label: "Wauzaji Wanaosubiri", value: DEMO_PLATFORM_STATS.pendingSellers.toString(), icon: AlertTriangle, color: "text-amber-600 bg-amber-100" },
-                    ].map((item) => (
-                      <div key={item.label} className="flex items-center justify-between">
-                        <div className="flex items-center gap-3">
-                          <div className={`rounded-lg p-2 ${item.color}`}><item.icon className="h-4 w-4" /></div>
-                          <span className="text-sm text-gray-700">{item.label}</span>
-                        </div>
-                        <span className="font-bold text-gray-900">{item.value}</span>
-                      </div>
-                    ))}
-                    <Button variant="outline" className="w-full mt-2" onClick={() => setActiveTab("sellers")}>
-                      Simamia Wauzaji →
-                    </Button>
-                  </CardContent>
-                </Card>
-
-                {/* Recent orders */}
-                <Card>
-                  <CardHeader className="flex flex-row items-center justify-between pb-3">
-                    <CardTitle className="text-base">Maagizo ya Hivi Karibuni</CardTitle>
-                    <button onClick={() => setActiveTab("orders")} className="text-xs text-brand-700 hover:text-brand-900">Ona Yote →</button>
-                  </CardHeader>
-                  <CardContent className="p-0">
-                    <div className="divide-y">
-                      {DEMO_RECENT_ORDERS.map((order) => (
-                        <div key={order.id} className="flex items-center justify-between px-6 py-3">
-                          <div>
-                            <p className="text-sm font-semibold text-gray-900">{order.id}</p>
-                            <p className="text-xs text-gray-500">{order.customer} · {order.seller}</p>
-                          </div>
-                          <div className="text-right">
-                            <p className="text-sm font-bold text-gray-900">{formatCurrency(order.amount)}</p>
-                            <Badge variant={STATUS_CONFIG[order.status].variant} className="mt-0.5">
-                              {STATUS_CONFIG[order.status].label}
-                            </Badge>
-                          </div>
-                        </div>
-                      ))}
+              {/* Pending sellers alert */}
+              {pending.length > 0 && (
+                <div className="flex items-center justify-between rounded-2xl border border-amber-200 bg-amber-50 p-5">
+                  <div className="flex items-center gap-3">
+                    <AlertTriangle className="h-5 w-5 text-amber-600" />
+                    <div>
+                      <p className="font-bold text-amber-900 text-sm">{pending.length} wauzaji wanaosubiri idhini</p>
+                      <p className="text-xs text-amber-700">Idhini haraka ili waanze kuuza</p>
                     </div>
-                  </CardContent>
-                </Card>
-              </div>
-            </div>
-          )}
-
-          {/* ── Sellers Tab ── */}
-          {activeTab === "sellers" && (
-            <div className="space-y-6">
-              {pendingSellers.length > 0 && (
-                <Card className="border-amber-200">
-                  <CardHeader>
-                    <CardTitle className="flex items-center gap-2 text-base text-amber-800">
-                      <AlertTriangle className="h-5 w-5 text-amber-600" />
-                      Wauzaji Wanaosubiri Idhini ({pendingSellers.length})
-                    </CardTitle>
-                  </CardHeader>
-                  <CardContent className="p-0">
-                    <div className="divide-y">
-                      {pendingSellers.map((seller) => (
-                        <div key={seller.id} className="flex flex-col gap-4 p-5 sm:flex-row sm:items-center sm:justify-between">
-                          <div className="flex items-start gap-3">
-                            <div className="flex h-10 w-10 items-center justify-center rounded-full bg-amber-100 text-amber-700 font-bold text-sm flex-shrink-0">
-                              {seller.storeName[0]}
-                            </div>
-                            <div>
-                              <p className="font-semibold text-gray-900">{seller.storeName}</p>
-                              <p className="text-sm text-gray-500">{seller.ownerName} · {seller.phone}</p>
-                              <p className="text-xs text-gray-400">📍 {seller.location} · Aliomba {formatRelativeTime(seller.appliedAt)}</p>
-                            </div>
-                          </div>
-                          <div className="flex gap-2">
-                            <Button size="sm" variant="outline"><Eye className="h-4 w-4" /> Angalia</Button>
-                            <Button size="sm" onClick={() => approveSeller(seller.id)} className="bg-green-600 hover:bg-green-700">
-                              <CheckCircle2 className="h-4 w-4" /> Idhinisha
-                            </Button>
-                            <Button size="sm" variant="destructive" onClick={() => rejectSeller(seller.id)}>
-                              <XCircle className="h-4 w-4" /> Kataa
-                            </Button>
-                          </div>
-                        </div>
-                      ))}
-                    </div>
-                  </CardContent>
-                </Card>
-              )}
-
-              {pendingSellers.length === 0 && (
-                <div className="flex flex-col items-center justify-center py-16 text-center">
-                  <CheckCircle2 className="h-12 w-12 text-green-500 mb-3" />
-                  <p className="font-semibold text-gray-700">Hakuna wauzaji wanaosubiri idhini!</p>
-                  <p className="text-sm text-gray-500 mt-1">Ombi zote zimeshughulikiwa.</p>
+                  </div>
+                  <Button size="sm" variant="secondary" onClick={() => setTab("sellers")}>
+                    Angalia →
+                  </Button>
                 </div>
               )}
-            </div>
+
+              {/* Recent orders */}
+              <div className="bg-white rounded-2xl border border-gray-100 shadow-sm">
+                <div className="flex items-center justify-between px-6 py-4 border-b border-gray-100">
+                  <h2 className="font-bold text-gray-900">Maagizo ya Hivi Karibuni</h2>
+                  <button onClick={() => setTab("orders")} className="text-xs font-semibold text-brand-700 hover:text-brand-900">Ona Yote →</button>
+                </div>
+                <div className="divide-y divide-gray-50">
+                  {ORDERS.map((o) => (
+                    <div key={o.id} className="flex items-center justify-between px-6 py-4 hover:bg-gray-50/50">
+                      <div>
+                        <p className="text-sm font-bold text-gray-900">{o.id}</p>
+                        <p className="text-xs text-gray-400">{o.customer} ← {o.seller}</p>
+                      </div>
+                      <div className="flex items-center gap-3">
+                        <Badge variant={STATUS[o.status].variant}>{STATUS[o.status].label}</Badge>
+                        <p className="text-sm font-bold text-gray-900 hidden sm:block">{formatCurrency(o.amount)}</p>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            </>
           )}
 
-          {/* ── Orders Tab ── */}
-          {activeTab === "orders" && (
-            <Card>
-              <div className="divide-y">
-                {DEMO_RECENT_ORDERS.map((order) => (
-                  <div key={order.id} className="flex items-center justify-between p-5 hover:bg-gray-50">
-                    <div>
-                      <p className="font-semibold text-gray-900 text-sm">{order.id}</p>
-                      <p className="text-xs text-gray-500">{order.customer} ← {order.seller}</p>
-                    </div>
-                    <div className="flex items-center gap-4">
-                      <div className="text-right">
-                        <p className="font-bold text-gray-900 text-sm">{formatCurrency(order.amount)}</p>
-                        <Badge variant={STATUS_CONFIG[order.status].variant}>{STATUS_CONFIG[order.status].label}</Badge>
+          {/* ── Sellers ── */}
+          {tab === "sellers" && (
+            <>
+              {pending.length > 0 ? (
+                <div className="bg-white rounded-2xl border border-gray-100 shadow-sm overflow-hidden">
+                  <div className="px-6 py-4 border-b border-gray-100 flex items-center gap-2">
+                    <AlertTriangle className="h-4 w-4 text-amber-600" />
+                    <h2 className="font-bold text-gray-900 text-sm">Wauzaji Wanaosubiri Idhini ({pending.length})</h2>
+                  </div>
+                  <div className="divide-y divide-gray-50">
+                    {pending.map((s) => (
+                      <div key={s.id} className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 px-6 py-5 hover:bg-gray-50/50">
+                        <div className="flex items-center gap-4">
+                          <div className="h-11 w-11 rounded-2xl bg-amber-100 flex items-center justify-center text-amber-700 font-bold text-sm flex-shrink-0">
+                            {s.store[0]}
+                          </div>
+                          <div>
+                            <p className="font-bold text-gray-900 text-sm">{s.store}</p>
+                            <p className="text-xs text-gray-500">{s.owner} · {s.phone}</p>
+                            <p className="text-xs text-gray-400">📍 {s.loc} · {formatRelativeTime(s.at)}</p>
+                          </div>
+                        </div>
+                        <div className="flex items-center gap-2 flex-shrink-0">
+                          <Button size="sm" variant="outline"><Eye className="h-3.5 w-3.5" /> Angalia</Button>
+                          <Button size="sm" className="bg-emerald-600 hover:bg-emerald-700" onClick={() => approve(s.id)}>
+                            <CheckCircle2 className="h-3.5 w-3.5" /> Idhinisha
+                          </Button>
+                          <Button size="sm" variant="destructive" onClick={() => reject(s.id)}>
+                            <XCircle className="h-3.5 w-3.5" /> Kataa
+                          </Button>
+                        </div>
                       </div>
+                    ))}
+                  </div>
+                </div>
+              ) : (
+                <div className="flex flex-col items-center justify-center bg-white rounded-2xl border border-gray-100 shadow-sm py-20 text-center">
+                  <CheckCircle2 className="h-12 w-12 text-emerald-500 mb-3" />
+                  <p className="font-bold text-gray-700">Hakuna wanaosubiri!</p>
+                  <p className="text-sm text-gray-400 mt-1">Ombi zote zimeshughulikiwa.</p>
+                </div>
+              )}
+            </>
+          )}
+
+          {/* ── Orders ── */}
+          {tab === "orders" && (
+            <div className="bg-white rounded-2xl border border-gray-100 shadow-sm overflow-hidden">
+              <div className="divide-y divide-gray-50">
+                {ORDERS.map((o) => (
+                  <div key={o.id} className="flex items-center justify-between px-6 py-4 hover:bg-gray-50/50">
+                    <div>
+                      <p className="text-sm font-bold text-gray-900">{o.id}</p>
+                      <p className="text-xs text-gray-400">{o.customer} ← {o.seller}</p>
+                    </div>
+                    <div className="flex items-center gap-3">
+                      <Badge variant={STATUS[o.status].variant}>{STATUS[o.status].label}</Badge>
+                      <p className="font-bold text-gray-900 text-sm">{formatCurrency(o.amount)}</p>
                       <Button variant="outline" size="icon-sm"><Eye className="h-4 w-4" /></Button>
                     </div>
                   </div>
                 ))}
               </div>
-            </Card>
+            </div>
           )}
         </main>
       </div>
