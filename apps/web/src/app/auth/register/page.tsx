@@ -6,7 +6,7 @@ import { useRouter, useSearchParams } from "next/navigation";
 import { User, Store, ShieldCheck, ArrowRight } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { registerUser } from "@/lib/firebase/auth";
+import { registerUser, getCurrentFirebaseUser } from "@/lib/firebase/auth";
 import { setDocument } from "@/lib/firebase/firestore";
 import { COLLECTIONS } from "@/lib/firebase/collections";
 import { validatePhoneNumber } from "@/lib/utils";
@@ -41,15 +41,21 @@ function RegisterForm() {
       if (!validatePhoneNumber(mpesaNumber)) { setError("Nambari ya M-Pesa si sahihi."); return; }
     }
 
+    // uid comes from OTP flow URL param; fall back to current Firebase user
+    const effectiveUid = uid || getCurrentFirebaseUser()?.uid || "";
+    if (!effectiveUid) {
+      setError("Kikao kimekwisha. Rudi kwenye ukurasa wa kuingia.");
+      return;
+    }
+
     setLoading(true);
     try {
-      // Create user profile
-      await registerUser(uid, { name, phone: phoneFromUrl, role, email: email || undefined });
+      await registerUser(effectiveUid, { name, phone: phoneFromUrl, role, email: email || undefined });
 
       // If seller, create seller profile too (pending approval)
       if (role === "seller") {
-        await setDocument(COLLECTIONS.SELLERS, uid, {
-          userId: uid,
+        await setDocument(COLLECTIONS.SELLERS, effectiveUid, {
+          userId: effectiveUid,
           storeName,
           description: "",
           location: storeLocation,
