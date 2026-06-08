@@ -3,11 +3,15 @@ export type UserRole = "customer" | "seller" | "admin";
 export interface User {
   id: string;
   name: string;
-  email: string;
+  email?: string;
   phone: string;
   role: UserRole;
   avatar?: string;
+  fcmToken?: string;
+  suspended?: boolean;
+  sellerVerified?: boolean;
   createdAt: Date;
+  updatedAt?: Date;
 }
 
 export interface SellerProfile {
@@ -17,12 +21,17 @@ export interface SellerProfile {
   description: string;
   location: string;
   verified: boolean;
+  active: boolean;
   rating: number;
   totalSales: number;
+  totalRevenue: number;
   logo?: string;
   banner?: string;
   mpesaNumber: string;
+  airtelNumber?: string;
   createdAt: Date;
+  updatedAt?: Date;
+  approvedAt?: Date;
 }
 
 export interface Product {
@@ -52,11 +61,13 @@ export interface CartItem {
 }
 
 export interface Address {
+  name?: string;
+  phone?: string;
   street: string;
-  ward: string;
-  district: string;
+  ward?: string;
+  district?: string;
   city: string;
-  region: string;
+  region?: string;
   country: string;
 }
 
@@ -64,31 +75,34 @@ export interface Order {
   id: string;
   customerId: string;
   customer?: User;
+  sellerIds?: string[];
   items: OrderItem[];
   status: string;
   paymentMethod: string;
   paymentStatus: string;
-  deliveryZone: string;
-  deliveryFee: number;
-  deliveryAddress: Address;
-  subtotal: number;
-  total: number;
+  deliveryZone?: string;
+  deliveryFee?: number;
+  deliveryAddress?: Address;
+  subtotal?: number;
+  total?: number;
+  totalAmount?: number;
   escrowReleaseAt?: Date;
   trackingNumber?: string;
   notes?: string;
   createdAt: Date;
-  updatedAt: Date;
+  updatedAt?: Date;
 }
 
 export interface OrderItem {
-  id: string;
-  orderId: string;
+  id?: string;
+  orderId?: string;
   productId: string;
+  productName?: string;
   product?: Product;
   sellerId: string;
   quantity: number;
   price: number;
-  sellerPayoutStatus: string;
+  sellerPayoutStatus?: string;
 }
 
 export interface Payment {

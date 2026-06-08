@@ -30,7 +30,7 @@ const FEATURES = [
   {
     icon: Store,
     title: "Wauzaji Halisi",
-    body: "Bidhaa za kweli kutoka kwa wafanyabiashara wa Kariakoo na Tanzania nzima.",
+    body: "Bidhaa za kweli kutoka kwa wafanyabiashara waliothibitishwa wa Tanzania nzima.",
     color: "bg-purple-50 text-purple-600",
   },
 ];
@@ -68,17 +68,17 @@ export default function HomePage() {
             {/* pill badge */}
             <div className="mb-6 inline-flex items-center gap-2 rounded-full glass px-4 py-2 text-sm font-medium">
               <span className="h-2 w-2 rounded-full bg-emerald-400 animate-pulse" />
-              Tanzania&apos;s #1 Kariakoo Marketplace
+              Tanzania&apos;s #1 Online Marketplace
             </div>
 
             <h1 className="mb-5 text-4xl sm:text-5xl lg:text-6xl font-extrabold leading-[1.1]">
-              Nunua Kutoka{" "}
-              <span className="text-amber-300">Kariakoo</span>
+              Nunua Bidhaa{" "}
+              <span className="text-amber-300">Tanzania Nzima</span>
               <br />Pokea Nyumbani
             </h1>
 
             <p className="mb-8 text-lg text-white/75 leading-relaxed max-w-lg">
-              Bidhaa za Kariakoo na Tanzania nzima, zinaletwa hadi mlangoni kwako.
+              Bidhaa bora kutoka kwa wafanyabiashara wa Tanzania nzima, zinaletwa hadi mlangoni kwako.
               Lipa kwa M-Pesa. Pesa yako inalindwa hadi bidhaa yako inafika.
             </p>
 
@@ -220,9 +220,9 @@ export default function HomePage() {
             <div className="relative p-10 md:p-14 flex flex-col md:flex-row items-center justify-between gap-8">
               <div>
                 <p className="text-xs font-bold uppercase tracking-widest text-amber-300 mb-3">Kwa Wauzaji</p>
-                <h2 className="text-3xl font-extrabold mb-3">Uza Kariakoo Online</h2>
+                <h2 className="text-3xl font-extrabold mb-3">Uza Bidhaa Zako Online</h2>
                 <p className="text-white/75 max-w-md leading-relaxed">
-                  Weka duka lako la Kariakoo mtandaoni. Pakia bidhaa, pokea maagizo, pata malipo ya M-Pesa ndani ya masaa 48. Hakuna ada ya kujisajili.
+                  Weka duka lako mtandaoni. Pakia bidhaa, pokea maagizo, pata malipo ya M-Pesa ndani ya masaa 48. Hakuna ada ya kujisajili.
                 </p>
                 <div className="mt-6 flex flex-wrap gap-3">
                   {["Hakuna ada ya kujisajili", "Malipo ya M-Pesa", "Dashboard rahisi"].map((b) => (
@@ -294,7 +294,7 @@ export default function HomePage() {
                 <div className="h-8 w-8 rounded-xl brand-gradient flex items-center justify-center text-white font-bold text-sm">S</div>
                 <span className="text-lg font-bold text-white">Soko<span className="text-amber-400">Link</span></span>
               </div>
-              <p className="text-sm leading-relaxed">Tanzania&apos;s first Kariakoo-focused e-commerce marketplace. Nunua kwa usalama, uza kwa urahisi.</p>
+              <p className="text-sm leading-relaxed">Tanzania&apos;s #1 online marketplace. Nunua kwa usalama, uza kwa urahisi.</p>
             </div>
 
             {[
