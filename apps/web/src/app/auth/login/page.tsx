@@ -3,9 +3,11 @@
 import { useState } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import { Phone, ArrowRight, Shield, ChevronLeft } from "lucide-react";
+import { ArrowRight, Shield, ChevronLeft } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { validatePhoneNumber, formatPhoneNumber } from "@/lib/utils";
+import { sendOTP, verifyOTP } from "@/lib/firebase/auth";
+import { getUserProfile } from "@/lib/firebase/firestore";
 
 type Step = "phone" | "otp";
 
@@ -21,18 +23,42 @@ export default function LoginPage() {
     setError("");
     if (!validatePhoneNumber(phone)) { setError("Nambari si sahihi. Mfano: 0712 345 678"); return; }
     setLoading(true);
-    setTimeout(() => { setLoading(false); setStep("otp"); }, 1000); // replace with real sendOTP()
+    try {
+      await sendOTP(phone, "recaptcha-container");
+      setStep("otp");
+    } catch (e: any) {
+      setError("Imeshindwa kutuma OTP. Hakikisha nambari ni sahihi na jaribu tena.");
+    } finally {
+      setLoading(false);
+    }
   }
 
   async function handleVerifyOTP() {
     setError("");
     if (otp.length < 6) { setError("Ingiza namba 6 za OTP."); return; }
     setLoading(true);
-    setTimeout(() => { setLoading(false); router.push("/shop"); }, 1000); // replace with real verifyOTP()
+    try {
+      const firebaseUser = await verifyOTP(otp);
+      const profile = await getUserProfile(firebaseUser.uid);
+      if (profile) {
+        if (profile.role === "admin")  { router.push("/admin/dashboard"); return; }
+        if (profile.role === "seller") { router.push("/seller/dashboard"); return; }
+        router.push("/shop");
+      } else {
+        router.push(`/auth/register?uid=${firebaseUser.uid}&phone=${encodeURIComponent(formatPhoneNumber(phone))}`);
+      }
+    } catch (e: any) {
+      setError("OTP si sahihi au imeisha muda. Jaribu tena.");
+    } finally {
+      setLoading(false);
+    }
   }
 
   return (
     <div className="min-h-screen bg-gray-50 flex">
+      {/* invisible recaptcha container — required by Firebase */}
+      <div id="recaptcha-container" />
+
       {/* Left panel (desktop) */}
       <div className="hidden lg:flex lg:w-1/2 hero-gradient text-white flex-col justify-between p-12">
         <Link href="/" className="flex items-center gap-2">
@@ -131,6 +157,7 @@ export default function LoginPage() {
                     value={otp}
                     onChange={(e) => setOtp(e.target.value)}
                     maxLength={6}
+                    onKeyDown={(e) => e.key === "Enter" && handleVerifyOTP()}
                     className="w-full rounded-xl border-2 border-gray-200 bg-white px-4 py-3.5 text-center text-2xl font-bold tracking-[0.5em] outline-none focus:border-brand-700 transition-colors"
                   />
                   {error && <p className="mt-2 text-xs text-red-600 text-center">{error}</p>}
