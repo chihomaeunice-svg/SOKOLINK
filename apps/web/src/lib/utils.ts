@@ -36,10 +36,10 @@ export function formatRelativeTime(date: Date | string): string {
   const diffHours = Math.floor(diffMins / 60);
   const diffDays = Math.floor(diffHours / 24);
 
-  if (diffMins < 1) return "Sasa hivi";
-  if (diffMins < 60) return `Dakika ${diffMins} zilizopita`;
-  if (diffHours < 24) return `Saa ${diffHours} zilizopita`;
-  if (diffDays < 7) return `Siku ${diffDays} zilizopita`;
+  if (diffMins < 1) return "Just now";
+  if (diffMins < 60) return `${diffMins} minute${diffMins === 1 ? "" : "s"} ago`;
+  if (diffHours < 24) return `${diffHours} hour${diffHours === 1 ? "" : "s"} ago`;
+  if (diffDays < 7) return `${diffDays} day${diffDays === 1 ? "" : "s"} ago`;
   return formatDate(date);
 }
 

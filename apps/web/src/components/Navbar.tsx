@@ -22,7 +22,7 @@ export default function Navbar({ cartCount = 0, userRole, userName }: NavbarProp
 
       {/* ── Announcement bar ── */}
       <div className="brand-gradient text-white text-center py-2 text-xs font-medium tracking-wide">
-        🇹🇿 Soko Link — Soko la Tanzania Nzima &nbsp;·&nbsp; Malipo Salama M-Pesa &nbsp;·&nbsp; Delivery Tanzania Nzima
+        🇹🇿 Soko Link — Tanzania&apos;s #1 Online Marketplace &nbsp;·&nbsp; Secure M-Pesa Payments &nbsp;·&nbsp; Nationwide Delivery
       </div>
 
       {/* ── Main bar ── */}
@@ -44,7 +44,7 @@ export default function Navbar({ cartCount = 0, userRole, userName }: NavbarProp
             <div className="flex w-full items-center rounded-xl border-2 border-gray-200 bg-gray-50 focus-within:border-brand-700 focus-within:bg-white transition-all overflow-hidden">
               <input
                 type="text"
-                placeholder="Tafuta bidhaa, duka..."
+                placeholder="Search products, stores..."
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
                 className="flex-1 px-4 py-2.5 text-sm bg-transparent outline-none text-gray-800 placeholder:text-gray-400"
@@ -79,7 +79,7 @@ export default function Navbar({ cartCount = 0, userRole, userName }: NavbarProp
             {userRole === "seller" && (
               <Link href="/seller/dashboard" className="hidden sm:block">
                 <Button variant="outline" size="sm" className="gap-1.5">
-                  <Store className="h-3.5 w-3.5" /> Duka Langu
+                  <Store className="h-3.5 w-3.5" /> My Store
                 </Button>
               </Link>
             )}
@@ -99,21 +99,21 @@ export default function Navbar({ cartCount = 0, userRole, userName }: NavbarProp
                 </button>
                 {userMenuOpen && (
                   <div className="absolute right-0 top-full mt-2 w-52 rounded-2xl border border-gray-100 bg-white shadow-xl py-2 z-50">
-                    <Link href="/profile"    className="flex items-center gap-3 px-4 py-2.5 text-sm text-gray-700 hover:bg-gray-50">👤 Akaunti Yangu</Link>
-                    <Link href="/orders"     className="flex items-center gap-3 px-4 py-2.5 text-sm text-gray-700 hover:bg-gray-50">📦 Maagizo Yangu</Link>
+                    <Link href="/profile"    className="flex items-center gap-3 px-4 py-2.5 text-sm text-gray-700 hover:bg-gray-50">👤 My Account</Link>
+                    <Link href="/orders"     className="flex items-center gap-3 px-4 py-2.5 text-sm text-gray-700 hover:bg-gray-50">📦 My Orders</Link>
                     <Link href="/wishlist"   className="flex items-center gap-3 px-4 py-2.5 text-sm text-gray-700 hover:bg-gray-50">❤️ Wishlist</Link>
                     <hr className="my-1 border-gray-100" />
-                    <button className="flex w-full items-center gap-3 px-4 py-2.5 text-sm text-red-600 hover:bg-red-50">🚪 Toka</button>
+                    <button className="flex w-full items-center gap-3 px-4 py-2.5 text-sm text-red-600 hover:bg-red-50">🚪 Logout</button>
                   </div>
                 )}
               </div>
             ) : (
               <div className="hidden sm:flex items-center gap-2 ml-1">
                 <Link href="/auth/login">
-                  <Button variant="ghost" size="sm">Ingia</Button>
+                  <Button variant="ghost" size="sm">Sign In</Button>
                 </Link>
                 <Link href="/auth/register">
-                  <Button size="sm">Jiandikishe</Button>
+                  <Button size="sm">Register</Button>
                 </Link>
               </div>
             )}
@@ -151,7 +151,7 @@ export default function Navbar({ cartCount = 0, userRole, userName }: NavbarProp
               <input
                 autoFocus
                 type="text"
-                placeholder="Tafuta bidhaa..."
+                placeholder="Search products..."
                 className="flex-1 px-4 py-2.5 text-sm bg-transparent outline-none"
               />
               <button className="px-4 py-2.5 brand-gradient text-white">
@@ -163,18 +163,18 @@ export default function Navbar({ cartCount = 0, userRole, userName }: NavbarProp
           <div className="px-4 py-3 space-y-1">
             {!userRole ? (
               <div className="flex gap-2 pb-2">
-                <Link href="/auth/login"    className="flex-1"><Button variant="outline" className="w-full">Ingia</Button></Link>
-                <Link href="/auth/register" className="flex-1"><Button className="w-full">Jiandikishe</Button></Link>
+                <Link href="/auth/login"    className="flex-1"><Button variant="outline" className="w-full">Sign In</Button></Link>
+                <Link href="/auth/register" className="flex-1"><Button className="w-full">Register</Button></Link>
               </div>
             ) : (
               <div className="pb-2 border-b border-gray-100 mb-2">
                 <p className="font-semibold text-gray-900 mb-2">{userName}</p>
-                <Link href="/profile" className="block py-2 text-sm text-gray-600">👤 Akaunti Yangu</Link>
-                <Link href="/orders"  className="block py-2 text-sm text-gray-600">📦 Maagizo Yangu</Link>
-                {userRole === "seller" && <Link href="/seller/dashboard" className="block py-2 text-sm font-semibold text-brand-800">🏪 Duka Langu</Link>}
+                <Link href="/profile" className="block py-2 text-sm text-gray-600">👤 My Account</Link>
+                <Link href="/orders"  className="block py-2 text-sm text-gray-600">📦 My Orders</Link>
+                {userRole === "seller" && <Link href="/seller/dashboard" className="block py-2 text-sm font-semibold text-brand-800">🏪 My Store</Link>}
               </div>
             )}
-            <p className="text-xs font-semibold uppercase tracking-widest text-gray-400 py-2">Aina za Bidhaa</p>
+            <p className="text-xs font-semibold uppercase tracking-widest text-gray-400 py-2">Product Categories</p>
             {PRODUCT_CATEGORIES.map((cat) => (
               <Link key={cat.id} href={`/shop?category=${cat.slug}`}
                 className="flex items-center gap-3 py-2.5 text-sm text-gray-700 hover:text-brand-900"

@@ -1,6 +1,6 @@
 export const SITE_CONFIG = {
   name: "Soko Link",
-  tagline: "Soko la Tanzania Nzima",
+  tagline: "Tanzania's #1 Online Marketplace",
   description: "Tanzania's #1 Online Marketplace",
   url: "https://sokolink.co.tz",
   email: "support@sokolink.co.tz",
@@ -15,21 +15,21 @@ export const SITE_CONFIG = {
 };
 
 export const PRODUCT_CATEGORIES = [
-  { id: "electronics", name: "Elektroniki", icon: "📱", slug: "electronics" },
-  { id: "fashion", name: "Mavazi", icon: "👗", slug: "fashion" },
-  { id: "food", name: "Chakula", icon: "🍎", slug: "food" },
-  { id: "home", name: "Nyumba", icon: "🏠", slug: "home" },
-  { id: "beauty", name: "Uzuri", icon: "💄", slug: "beauty" },
-  { id: "sports", name: "Michezo", icon: "⚽", slug: "sports" },
-  { id: "books", name: "Vitabu", icon: "📚", slug: "books" },
-  { id: "automotive", name: "Magari", icon: "🚗", slug: "automotive" },
-  { id: "agriculture", name: "Kilimo", icon: "🌾", slug: "agriculture" },
-  { id: "health", name: "Afya", icon: "💊", slug: "health" },
+  { id: "electronics", name: "Electronics", icon: "📱", slug: "electronics" },
+  { id: "fashion", name: "Fashion", icon: "👗", slug: "fashion" },
+  { id: "food", name: "Food", icon: "🍎", slug: "food" },
+  { id: "home", name: "Home", icon: "🏠", slug: "home" },
+  { id: "beauty", name: "Beauty", icon: "💄", slug: "beauty" },
+  { id: "sports", name: "Sports", icon: "⚽", slug: "sports" },
+  { id: "books", name: "Books", icon: "📚", slug: "books" },
+  { id: "automotive", name: "Automotive", icon: "🚗", slug: "automotive" },
+  { id: "agriculture", name: "Agriculture", icon: "🌾", slug: "agriculture" },
+  { id: "health", name: "Health", icon: "💊", slug: "health" },
 ];
 
 export const DELIVERY_ZONES = [
-  { id: "dse-central", name: "Dar es Salaam - Kati", fee: 2000, days: 1 },
-  { id: "dse-outer", name: "Dar es Salaam - Nje", fee: 3500, days: 1 },
+  { id: "dse-central", name: "Dar es Salaam - Central", fee: 2000, days: 1 },
+  { id: "dse-outer", name: "Dar es Salaam - Outer", fee: 3500, days: 1 },
   { id: "arusha", name: "Arusha", fee: 8000, days: 2 },
   { id: "mwanza", name: "Mwanza", fee: 10000, days: 3 },
   { id: "dodoma", name: "Dodoma", fee: 8500, days: 2 },

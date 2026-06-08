@@ -16,31 +16,31 @@ const plusJakarta = Plus_Jakarta_Sans({
 
 export const metadata: Metadata = {
   title: {
-    default: "Soko Link — Soko la Tanzania Nzima",
+    default: "Soko Link — Tanzania's #1 Online Marketplace",
     template: "%s | Soko Link",
   },
   description:
-    "Nunua bidhaa bora kutoka Tanzania nzima. Lipa kwa M-Pesa, pokea nyumbani. Tanzania's #1 Online Marketplace.",
+    "Shop the best products from across Tanzania. Pay with M-Pesa, delivered to your door. Tanzania's #1 Online Marketplace.",
   keywords: [
-    "tanzania",
     "tanzania",
     "online shopping",
     "mpesa",
     "e-commerce",
     "dar es salaam",
-    "nunua online",
+    "buy online",
+    "tanzania marketplace",
   ],
   authors: [{ name: "Soko Link" }],
   creator: "Soko Link",
   openGraph: {
     type: "website",
-    locale: "sw_TZ",
-    alternateLocale: "en_TZ",
+    locale: "en_TZ",
+    alternateLocale: "sw_TZ",
     url: "https://sokolink.co.tz",
     siteName: "Soko Link",
-    title: "Soko Link — Soko la Tanzania Nzima",
+    title: "Soko Link — Tanzania's #1 Online Marketplace",
     description:
-      "Nunua bidhaa bora kutoka Tanzania nzima. Lipa kwa M-Pesa.",
+      "Shop the best products from across Tanzania. Pay with M-Pesa.",
   },
   twitter: {
     card: "summary_large_image",
@@ -62,7 +62,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <html lang="sw" className={`${inter.variable} ${plusJakarta.variable}`}>
+    <html lang="en" className={`${inter.variable} ${plusJakarta.variable}`}>
       <body className="min-h-screen bg-white antialiased">{children}</body>
     </html>
   );
