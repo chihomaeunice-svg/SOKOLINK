@@ -16,13 +16,13 @@ const plusJakarta = Plus_Jakarta_Sans({
 
 export const metadata: Metadata = {
   title: {
-    default: "Soko Link — Kariakoo na Tanzania Yote",
+    default: "Soko Link — Soko la Tanzania Nzima",
     template: "%s | Soko Link",
   },
   description:
-    "Nunua bidhaa bora kutoka Kariakoo na Tanzania nzima. Lipa kwa M-Pesa, pokea nyumbani. Tanzania's first Kariakoo-focused e-commerce marketplace.",
+    "Nunua bidhaa bora kutoka Tanzania nzima. Lipa kwa M-Pesa, pokea nyumbani. Tanzania's #1 Online Marketplace.",
   keywords: [
-    "kariakoo",
+    "tanzania",
     "tanzania",
     "online shopping",
     "mpesa",
@@ -38,14 +38,14 @@ export const metadata: Metadata = {
     alternateLocale: "en_TZ",
     url: "https://sokolink.co.tz",
     siteName: "Soko Link",
-    title: "Soko Link — Kariakoo na Tanzania Yote",
+    title: "Soko Link — Soko la Tanzania Nzima",
     description:
-      "Nunua bidhaa bora kutoka Kariakoo na Tanzania nzima. Lipa kwa M-Pesa.",
+      "Nunua bidhaa bora kutoka Tanzania nzima. Lipa kwa M-Pesa.",
   },
   twitter: {
     card: "summary_large_image",
     title: "Soko Link",
-    description: "Tanzania's Kariakoo-focused e-commerce marketplace",
+    description: "Tanzania's #1 Online Marketplace",
   },
   manifest: "/manifest.json",
 };

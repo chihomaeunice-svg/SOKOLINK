@@ -43,12 +43,12 @@ export default function LoginPage() {
         <div>
           <div className="text-6xl mb-6">🛍️</div>
           <h2 className="text-3xl font-extrabold mb-4 leading-tight">
-            Tanzania&apos;s #1<br />Kariakoo Marketplace
+            Tanzania&apos;s #1<br />Online Marketplace
           </h2>
           <p className="text-white/70 text-lg leading-relaxed mb-8">
             Nunua bidhaa bora kwa bei za soko, ukiwa nyumbani kwako.
           </p>
-          {["Malipo salama kwa M-Pesa", "Delivery Tanzania nzima", "Bidhaa halisi za Kariakoo"].map((f) => (
+          {["Malipo salama kwa M-Pesa", "Delivery Tanzania nzima", "Bidhaa halisi za Tanzania"].map((f) => (
             <div key={f} className="flex items-center gap-3 mb-3 text-white/80 text-sm">
               <span className="h-5 w-5 rounded-full bg-emerald-500/30 flex items-center justify-center text-emerald-300 text-xs">✓</span>
               {f}

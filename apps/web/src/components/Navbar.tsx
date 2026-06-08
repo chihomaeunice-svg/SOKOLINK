@@ -22,7 +22,7 @@ export default function Navbar({ cartCount = 0, userRole, userName }: NavbarProp
 
       {/* ── Announcement bar ── */}
       <div className="brand-gradient text-white text-center py-2 text-xs font-medium tracking-wide">
-        🇹🇿 Soko Link — Kariakoo Ndani ya Simu &nbsp;·&nbsp; Malipo Salama M-Pesa &nbsp;·&nbsp; Delivery Tanzania Nzima
+        🇹🇿 Soko Link — Soko la Tanzania Nzima &nbsp;·&nbsp; Malipo Salama M-Pesa &nbsp;·&nbsp; Delivery Tanzania Nzima
       </div>
 
       {/* ── Main bar ── */}

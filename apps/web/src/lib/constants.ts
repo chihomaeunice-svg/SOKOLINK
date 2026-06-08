@@ -1,11 +1,11 @@
 export const SITE_CONFIG = {
   name: "Soko Link",
-  tagline: "Kariakoo na Tanzania Yote",
-  description: "Tanzania's first Kariakoo-focused e-commerce marketplace",
+  tagline: "Soko la Tanzania Nzima",
+  description: "Tanzania's #1 Online Marketplace",
   url: "https://sokolink.co.tz",
   email: "support@sokolink.co.tz",
   phone: "+255 700 000 000",
-  address: "Kariakoo, Dar es Salaam, Tanzania",
+  address: "Dar es Salaam, Tanzania",
   social: {
     instagram: "@sokolinktz",
     twitter: "@sokolinktz",

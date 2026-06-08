@@ -124,8 +124,8 @@ function RegisterForm() {
                     <Store className="h-4 w-4" /> Maelezo ya Duka
                   </p>
                 </div>
-                <Input label="Jina la Duka" placeholder="Mfano: Kariakoo Electronics" value={storeName} onChange={(e) => setStoreName(e.target.value)} />
-                <Input label="Mahali pa Duka" placeholder="Mfano: Kariakoo, Dar es Salaam" value={storeLocation} onChange={(e) => setStoreLocation(e.target.value)} />
+                <Input label="Jina la Duka" placeholder="Mfano: Bora Electronics" value={storeName} onChange={(e) => setStoreName(e.target.value)} />
+                <Input label="Mahali pa Duka" placeholder="Mfano: Ilala, Dar es Salaam" value={storeLocation} onChange={(e) => setStoreLocation(e.target.value)} />
                 <Input label="Nambari ya M-Pesa ya Malipo" type="tel" placeholder="0712 345 678" value={mpesaNumber} onChange={(e) => setMpesaNumber(e.target.value)} />
                 <div className="rounded-lg bg-amber-50 p-3 text-xs text-amber-700">
                   ⚠️ Akaunti yako ya muuzaji itahitaji idhini ya admin kabla hujaanza kuuza.
