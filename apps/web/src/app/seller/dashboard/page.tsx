@@ -92,9 +92,9 @@ export default function SellerDashboard() {
         {/* Profile footer */}
         <div className="border-t border-gray-100 p-4">
           <div className="flex items-center gap-3 mb-3">
-            <div className="h-9 w-9 rounded-full brand-gradient flex items-center justify-center text-white font-bold text-sm flex-shrink-0">K</div>
+            <div className="h-9 w-9 rounded-full brand-gradient flex items-center justify-center text-white font-bold text-sm flex-shrink-0">D</div>
             <div className="min-w-0">
-              <p className="text-sm font-semibold text-gray-900 truncate">Kariakoo Electronics</p>
+              <p className="text-sm font-semibold text-gray-900 truncate">Duka Langu</p>
               <p className="text-xs text-emerald-600">✓ Duka Limethibitishwa</p>
             </div>
           </div>
@@ -115,7 +115,7 @@ export default function SellerDashboard() {
               {tab === "orders"   && "Maagizo"}
               {tab === "products" && "Bidhaa Zangu"}
             </h1>
-            <p className="text-xs text-gray-400">Kariakoo Electronics</p>
+            <p className="text-xs text-gray-400">Duka Langu</p>
           </div>
           <div className="flex items-center gap-2">
             <button className="relative p-2 rounded-xl text-gray-400 hover:text-gray-700 hover:bg-gray-50">

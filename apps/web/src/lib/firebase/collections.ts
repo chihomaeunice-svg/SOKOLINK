@@ -35,7 +35,7 @@ export const COLLECTIONS = {
 //   userId: string
 //   storeName: string
 //   description: string
-//   location: string        "Kariakoo, Dar es Salaam"
+//   location: string        "Ilala, Dar es Salaam"
 //   verified: boolean       (admin approves)
 //   active: boolean
 //   rating: number          (0–5)
